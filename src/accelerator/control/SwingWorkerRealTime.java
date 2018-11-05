@@ -67,15 +67,20 @@ public class SwingWorkerRealTime {
       while (!isCancelled()) {
  
         fifo.add(fifo.get(fifo.size() - 1) + Math.random() - .5);
+        fifo2.add(fifo2.get(fifo2.size() -1)+ Math.random()-.5);
         if (fifo.size() > 500) {
           fifo.removeFirst();
+          fifo2.removeFirst();
         }
  
-        double[] array = new double[fifo.size()];
+        double[] xarray = new double[fifo.size()];
+        double[] yarray= new double [fifo2.size()];
         for (int i = 0; i < fifo.size(); i++) {
-          array[i] = fifo.get(i);
+          xarray[i] = fifo.get(i);
+          yarray[i] = fifo2.get(i);
         }
-        publish(array);
+        publish(xarray);
+        publish(yarray);
 
  
         try {
