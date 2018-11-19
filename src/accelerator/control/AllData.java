@@ -37,6 +37,8 @@ public class AllData {
     public static double divisor;
     static boolean isTesting = true;
     public static SerialPort serialPort;
+    public static SerialPort serialPort2;
+    public static boolean DeadHead = true;
 
     public static double freqConv(double inputFreq){
         divisor=.814907252789;
