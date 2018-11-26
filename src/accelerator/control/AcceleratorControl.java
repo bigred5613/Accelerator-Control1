@@ -124,7 +124,7 @@ SerialPort serial1Port = new SerialPort(port1Name);
     public static void main(String[] args) {
         String[] portNames = SerialPortList.getPortNames();
         SerialCommunicator.StartUp();
-        
+        if (AllData.DeadHead !=true){
         if (portNames.length == 0) {
             System.out.println("There are no serial-ports :( You can use an emulator, such ad VSPE, to create a virtual serial port.");
             System.out.println("Press Enter to exit...");
@@ -136,6 +136,7 @@ SerialPort serial1Port = new SerialPort(port1Name);
             }
             return;
         }
+    }
         
         // выбор порта
         System.out.println("Available com-ports:");
@@ -146,13 +147,26 @@ SerialPort serial1Port = new SerialPort(port1Name);
         Scanner in = new Scanner(System.in);
         String portName = in.next();
         
+        System.out.println("Type second accelerator port name, which you want to use, and press Enter...");
+        Scanner in2 = new Scanner(System.in);
+        String portName2 = in.next();
+        
         // writing to port
         AllData.serialPort = new SerialPort(portName);
+        AllData.serialPort2 = new SerialPort(portName2);
+        
+        
         try {
             // opening port
             AllData.serialPort.openPort();
+            AllData.serialPort2.openPort();
             
             AllData.serialPort.setParams(SerialPort.BAUDRATE_9600,
+                                 SerialPort.DATABITS_8,
+                                 SerialPort.STOPBITS_1,
+                                 SerialPort.PARITY_NONE);
+            
+                        AllData.serialPort2.setParams(SerialPort.BAUDRATE_9600,
                                  SerialPort.DATABITS_8,
                                  SerialPort.STOPBITS_1,
                                  SerialPort.PARITY_NONE);
@@ -161,18 +175,29 @@ SerialPort serial1Port = new SerialPort(port1Name);
             //                              SerialPort.FLOWCONTROL_RTSCTS_OUT);
             
             AllData.serialPort.addEventListener(new PortReader(), SerialPort.MASK_RXCHAR);
+            AllData.serialPort2.addEventListener(new PortReader(), SerialPort.MASK_RXCHAR);          
             // writing string to port
             AllData.serialPort.writeString(">Q1F");
             AllData.serialPort.writeString("\r\n");
             
-            System.out.println("String wrote to port, waiting for response..");
+            AllData.serialPort2.writeString(">Q1F");
+            AllData.serialPort2.writeString("\r\n");
+
+            
+            System.out.println("Strings wrote to port, waiting for response..");
              AllData.serialPort.writeString(">Q1F");
             AllData.serialPort.writeString("\r\n");
+            
+            AllData.serialPort2.writeString(">Q1F");
+            AllData.serialPort2.writeString("\r\n");
         }
         catch (SerialPortException ex) {
             System.out.println("Error in writing data to port: " + ex);
         }
-            main_window.main(args, AllData.serialPort);
+        
+        // This is the main window startup command.  Add things before here if you need to.
+        
+            main_window.main(args, AllData.serialPort, AllData.serialPort2);
 
             
     }
