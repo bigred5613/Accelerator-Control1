@@ -660,7 +660,7 @@ public class main_window extends javax.swing.JFrame {
         //</editor-fold>
         try {
             /* Create and display the form */
-            SwingWorkerRealTime.main(args);
+         if (AllData.noChart =! true){   SwingWorkerRealTime.main(args);}
         } catch (Exception ex) {
             System.out.println("Well, the swing worker real time didn't start");
             Logger.getLogger(main_window.class.getName()).log(Level.SEVERE, null, ex);
